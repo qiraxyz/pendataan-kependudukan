@@ -1,12 +1,58 @@
 "use client";
+import { useState, useEffect } from "react";
 import progressBar from "@/library/Loader/progressBar";
 import { motion } from "framer-motion";
+import HandlerLoginFetcher from "@/HandlerApi/LoginHandler";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const isLoading = progressBar();
+  const router = useRouter();
+  const progressBarLoading = progressBar();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [shouldFetch, setShouldFetch] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  const { data, isFetching, isError } = HandlerLoginFetcher(
+    username,
+    password,
+    shouldFetch
+  );
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (data && !localStorage.getItem("jwt")) {
+      setShouldFetch(false);
+      console.log(data.data.token);
+      localStorage.setItem("jwtToken", data.data.token);
+      router.replace("/");
+    } else if (localStorage.getItem("jwtToken")) {
+      console.log("data already exist");
+      router.replace("/");
+    }
+  }, [data, isClient]);
+
+  const handleLogin = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setShouldFetch(true);
+
+    // setTimeout(() => {
+    //   setShouldFetch(false);
+    // }, 1000);
+  };
+
+  if (isClient && localStorage.getItem("jwtToken")) {
+    router.replace("/");
+    return null;
+  }
+
   return (
     <>
-      {isLoading ? (
+      {progressBarLoading && !isFetching ? (
         <div className="loading-screen">
           <div className="progressBar"></div>
         </div>
@@ -21,7 +67,7 @@ export default function Login() {
             <h2 className="text-2xl text-white font-semibold mb-4">
               Login Admin
             </h2>
-            <form>
+            <form onSubmit={handleLogin}>
               <div className="mb-4">
                 <label
                   htmlFor="username"
@@ -33,7 +79,10 @@ export default function Login() {
                   type="text"
                   id="username"
                   name="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   placeholder="username"
+                  autoComplete="off"
                   className="w-full border p-2 rounded-md focus:outline-none focus:ring focus:border-gray-300"
                 />
               </div>
@@ -48,7 +97,10 @@ export default function Login() {
                   type="password"
                   id="password"
                   name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="password"
+                  autoComplete="off"
                   className="w-full border p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                 />
               </div>

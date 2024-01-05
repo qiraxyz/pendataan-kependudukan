@@ -1,10 +1,7 @@
 import useSWR from "swr";
+import { LoginCredentials } from "@/Model/login.model";
 
-export default function HandlerLoginFetcher(
-  username: string,
-  password: string,
-  shouldFetch: boolean
-) {
+export default function HandlerLoginFetcher(credentials: LoginCredentials) {
   const fetcher = async (url: string | URL | Request) => {
     const response = await fetch(url, {
       method: "POST",
@@ -12,8 +9,8 @@ export default function HandlerLoginFetcher(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        Email: username,
-        Password: password,
+        Email: credentials.username,
+        Password: credentials.password,
       }),
     });
 
@@ -26,7 +23,7 @@ export default function HandlerLoginFetcher(
   };
 
   const { data, error } = useSWR(
-    shouldFetch ? "http://localhost:2000/api/auth" : null,
+    credentials.shouldFetch ? "http://localhost:2000/api/auth" : null,
     fetcher
   );
 

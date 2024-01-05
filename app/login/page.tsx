@@ -4,20 +4,21 @@ import progressBar from "@/library/Loader/progressBar";
 import { motion } from "framer-motion";
 import HandlerLoginFetcher from "@/HandlerApi/LoginHandler";
 import { useRouter } from "next/navigation";
+import { LoginCredentials } from "@/Model/login.model";
 
 export default function Login() {
   const router = useRouter();
   const progressBarLoading = progressBar();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [shouldFetch, setShouldFetch] = useState(false);
+  const [credentials, setCredentials] = useState<LoginCredentials>({
+    username: "",
+    password: "",
+    shouldFetch: false,
+  });
   const [isClient, setIsClient] = useState(false);
 
   const { data, isFetching, isError } = HandlerLoginFetcher(
-    username,
-    password,
-    shouldFetch
+    credentials
   );
 
   useEffect(() => {
@@ -26,7 +27,10 @@ export default function Login() {
 
   useEffect(() => {
     if (data && !localStorage.getItem("jwt")) {
-      setShouldFetch(false);
+      setCredentials((prevCredentials) => ({
+        ...prevCredentials,
+        shouldFetch: false,
+      }));
       console.log(data.data.token);
       localStorage.setItem("jwtToken", data.data.token);
       router.replace("/");
@@ -38,10 +42,16 @@ export default function Login() {
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setShouldFetch(true);
+    setCredentials((prevCredentials) => ({
+      ...prevCredentials,
+      shouldFetch: true,
+    }));
 
     // setTimeout(() => {
-    //   setShouldFetch(false);
+    //   setCredentials((prevCredentials) => ({
+    //     ...prevCredentials,
+    //     shouldFetch: false,
+    //   }));
     // }, 1000);
   };
 
@@ -79,8 +89,13 @@ export default function Login() {
                   type="text"
                   id="username"
                   name="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={credentials.username}
+                  onChange={(e) =>
+                    setCredentials((prevCredentials) => ({
+                      ...prevCredentials,
+                      username: e.target.value,
+                    }))
+                  }
                   placeholder="username"
                   autoComplete="off"
                   className="w-full border p-2 rounded-md focus:outline-none focus:ring focus:border-gray-300"
@@ -97,8 +112,13 @@ export default function Login() {
                   type="password"
                   id="password"
                   name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={credentials.password}
+                  onChange={(e) =>
+                    setCredentials((prevCredentials) => ({
+                      ...prevCredentials,
+                      password: e.target.value,
+                    }))
+                  }
                   placeholder="password"
                   autoComplete="off"
                   className="w-full border p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
@@ -119,3 +139,4 @@ export default function Login() {
     </>
   );
 }
+

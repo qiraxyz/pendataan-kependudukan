@@ -47,12 +47,12 @@ export default function Login() {
       shouldFetch: true,
     }));
 
-    // setTimeout(() => {
-    //   setCredentials((prevCredentials) => ({
-    //     ...prevCredentials,
-    //     shouldFetch: false,
-    //   }));
-    // }, 1000);
+    setTimeout(() => {
+      setCredentials((prevCredentials) => ({
+        ...prevCredentials,
+        shouldFetch: false,
+      }));
+    }, 1000);
   };
 
   if (isClient && localStorage.getItem("jwtToken")) {

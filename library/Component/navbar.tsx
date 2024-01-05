@@ -1,5 +1,7 @@
+import React from 'react';
+
 export default function Navbar() {
     return (
-       <h1>Ini Navbar</h1>
-    )
+    <h1 className='text-white'>ini Navbar</h1>
+    );
 }

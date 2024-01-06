@@ -9,11 +9,11 @@ export default function Home() {
   const isLoading = progressBar();
 
   useEffect(() => {
-    if (localStorage.getItem("jwtToken")) {
-      router.replace('/')
-    } else {
-      router.replace('/login')
-    }
+    // if (localStorage.getItem("jwtToken")) {
+    //   router.replace('/')
+    // } else {
+    //   router.replace('/login')
+    // }
   }, []);
 
   return (

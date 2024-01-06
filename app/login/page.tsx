@@ -1,44 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import progressBar from "@/library/Loader/progressBar";
 import { motion } from "framer-motion";
-import HandlerLoginFetcher from "@/HandlerApi/LoginHandler";
-import { useRouter } from "next/navigation";
-import { LoginCredentials } from "@/Model/login.model";
+import HandlerLoginFetcher from "@/handler/LoginHandler";
 
 export default function Login() {
-  const router = useRouter();
   const progressBarLoading = progressBar();
 
-  const [credentials, setCredentials] = useState<LoginCredentials>({
+  const [credentials, setCredentials] = useState({
     username: "",
     password: "",
     shouldFetch: false,
   });
-  const [isClient, setIsClient] = useState(false);
 
-  const { data, isFetching, isError } = HandlerLoginFetcher(
-    credentials
-  );
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (data && !localStorage.getItem("jwt")) {
-      setCredentials((prevCredentials) => ({
-        ...prevCredentials,
-        shouldFetch: false,
-      }));
-      console.log(data.data.token);
-      localStorage.setItem("jwtToken", data.data.token);
-      router.replace("/");
-    } else if (localStorage.getItem("jwtToken")) {
-      console.log("data already exist");
-      router.replace("/");
-    }
-  }, [data, isClient]);
+  const { isFetching } = HandlerLoginFetcher(credentials);
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -54,12 +29,6 @@ export default function Login() {
       }));
     }, 1000);
   };
-
-  if (isClient && localStorage.getItem("jwtToken")) {
-    router.replace("/");
-    return null;
-  }
-
   return (
     <>
       {progressBarLoading && !isFetching ? (

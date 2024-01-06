@@ -1,7 +1,12 @@
+// LoginHandler.ts
 import useSWR from "swr";
-import { LoginCredentials } from "@/Model/login.model";
+import { useRouter } from "next/navigation";
+import { LoginCredentials } from "@/model/login.model";
+import { setCookie, hasCookie } from "cookies-next";
 
 export default function HandlerLoginFetcher(credentials: LoginCredentials) {
+  const router = useRouter();
+
   const fetcher = async (url: string | URL | Request) => {
     const response = await fetch(url, {
       method: "POST",
@@ -19,6 +24,12 @@ export default function HandlerLoginFetcher(credentials: LoginCredentials) {
     }
 
     const data = await response.json();
+
+    if (data && !hasCookie("jwtToken")) {
+      setCookie("jwtToken", data.data.token);
+      router.replace("/");
+    }
+
     return data;
   };
 

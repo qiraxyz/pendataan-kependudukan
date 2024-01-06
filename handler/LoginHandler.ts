@@ -1,7 +1,7 @@
 // LoginHandler.ts
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
-import { LoginCredentials } from "@/modeldata/login.model";
+import { LoginCredentials } from "@/model/login.model";
 import { setCookie, hasCookie } from "cookies-next";
 
 export default function HandlerLoginFetcher(credentials: LoginCredentials) {

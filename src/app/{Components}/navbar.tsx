@@ -1,9 +1,23 @@
-import React from "react"
+import React from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function NavbarMain() {
-    return (
-       <div className="navbar">
-        
-       </div>
-    )
+  return (
+    <>
+      <Link href={"/auth"}>
+      <motion.div className="flex items-center justify-end flex-wrap bg-zinc-900 p-6 text-white">
+        <p className="mr-8">Home</p>
+        <p className="mr-8">Datasource</p>
+        <motion.button
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+          type="button"
+          className="focus:outline-none font-bold text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 rounded-lg text-sm px-8 py-2.5"
+        >Login</motion.button>
+      </motion.div>
+      </Link>
+    </>
+  );
 }

@@ -1,17 +1,17 @@
-'use client'
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 import progressBar from "@/lib/loader";
-import AuthHandler from '../{api-handlers}/auth';
-import AuthUser from '@/model/auth.response';
-import { setCookie } from 'cookies-next';
-import Router from 'next/router';
+import AuthHandler from "../{api-handlers}/auth";
+import AuthUser from "@/model/auth.response";
+import { getCookie, hasCookie, setCookie } from "cookies-next";
 
 export default function AuthInterface() {
   const isLoading = progressBar();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginFailed, setLoginFailed] = useState(false);
 
-  const handleSignIn = async (e: { preventDefault: () => void; }) => {
+  const handleSignIn = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       const userData: AuthUser = {
@@ -19,22 +19,20 @@ export default function AuthInterface() {
         Password: password,
       };
       const responseData = await AuthHandler(userData);
-  
-      // Periksa status respons HTTP
+
       if (responseData.status >= 200 && responseData.status < 300) {
-        console.log('Login berhasil');
-        // Lakukan sesuatu jika login berhasil
-        setCookie('token', responseData.data.token);
+        setCookie("token", responseData.data.token);
+        console.log("Login berhasil cookies : " + getCookie('token'));
+        window.location.replace("/dashboard");
       } else {
-        console.log('Login gagal');
+        console.log("Login gagal");
         console.log(responseData);
-        // Lakukan sesuatu jika login gagal
+        setLoginFailed(true);
       }
     } catch (error) {
-      // console.error('Sign in error:', error);
+      console.error("Sign in error:", error);
     }
-  }
-  
+  };
 
   if (isLoading) {
     return (
@@ -55,31 +53,47 @@ export default function AuthInterface() {
           <div className="m-6">
             <form className="mb-4" onSubmit={handleSignIn}>
               <div className="mb-6">
-                <label htmlFor="email" className="block mb-2 text-sm text-gray-300">Email Address</label>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm text-gray-300"
+                >
+                  Email Address
+                </label>
                 <input
                   type="email"
                   name="email"
                   id="email"
                   placeholder="Your email address"
-                  className="w-full px-3 py-2 placeholder-gray-300 bg-zinc-800 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+                  className={`w-full px-3 py-2 placeholder-gray-300 bg-zinc-800 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 ${
+                    loginFailed ? "border-red-500" : ""
+                  }`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="mb-6">
                 <div className="flex justify-between mb-2">
-                  <label htmlFor="password" className="text-sm text-gray-300">Password</label>
+                  <label htmlFor="password" className="text-sm text-gray-300">
+                    Password
+                  </label>
                 </div>
                 <input
                   type="password"
                   name="password"
                   id="password"
                   placeholder="Your password"
-                  className="w-full px-3 py-2 placeholder-gray-300 bg-zinc-800 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+                  className={`w-full px-3 py-2 placeholder-gray-300 bg-zinc-800 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 ${
+                    loginFailed ? "border-red-500" : ""
+                  }`}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+              {loginFailed && (
+                <p className="text-red-500 text-sm mb-4">
+                  Login failed. Please try again.
+                </p>
+              )}
               <div className="mb-6">
                 <button
                   type="submit"

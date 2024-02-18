@@ -1,5 +1,5 @@
 "use server"
-import AuthUser from "@/model/auth.response";
+import AuthUser from "@/{model}/auth.response";
 import { setCookie } from "cookies-next"; 
 
 export default async function AuthHandler(auth_model : AuthUser) {

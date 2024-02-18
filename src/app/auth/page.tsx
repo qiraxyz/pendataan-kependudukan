@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import progressBar from "@/lib/loader";
+import progressBar from "@/{lib}/loader";
 import AuthHandler from "../{api-handlers}/auth";
-import AuthUser from "@/model/auth.response";
+import AuthUser from "@/{model}/auth.response";
 import { getCookie, hasCookie, setCookie } from "cookies-next";
 
 export default function AuthInterface() {

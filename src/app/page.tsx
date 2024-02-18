@@ -1,5 +1,5 @@
 "use client";
-import progressBar from "@/lib/loader";
+import progressBar from "@/{lib}/loader";
 import Head from "next/head";
 import NavbarMain from "./{components}/navbar";
 import ContentMain from "./{components}/content";

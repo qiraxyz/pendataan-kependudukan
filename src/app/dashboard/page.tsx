@@ -1,6 +1,7 @@
 "use client";
-import progressBar from "@/lib/loader";
+import progressBar from "@/{lib}/loader";
 import NavbarMain from "../{components}/navbar";
+import DashboardContent from "../{components}/dashboard/kependudukan";
 
 export default function Dashboard() {
   const isLoading = progressBar();
@@ -15,6 +16,7 @@ export default function Dashboard() {
         ) : (
           <>
             <NavbarMain />
+            <DashboardContent />
           </>
         )}
       </div>

@@ -3,4 +3,5 @@ export default interface KependudukanList {
     ImageFrame: string,
     title: string,
     description: string,
+    detailURI: string,
 }

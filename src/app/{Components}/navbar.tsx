@@ -29,12 +29,16 @@ export default function NavbarMain() {
       {isLoggedIn && (
         <>
           <motion.div className="flex items-center justify-end flex-wrap bg-zinc-900 p-6 text-white">
-            <p className="mr-2 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
+            <Link href={'/'}>
+            <button className="mr-2 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
               Home
-            </p>
-            <p className="mr-2 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
+            </button>
+            </Link>
+            <Link href={'/dashboard'}>
+            <button className="mr-2 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
               Datasource
-            </p>
+            </button>
+            </Link>
             <motion.button
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -51,12 +55,16 @@ export default function NavbarMain() {
       {!isLoggedIn && (
         <>
           <motion.div className="flex items-center justify-end flex-wrap bg-zinc-900 p-6 text-white">
-            <p className="mr-2 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
+          <Link href={'/auth'}>
+            <button className="mr-2 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
               Home
-            </p>
-            <p className="mr-8 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
+            </button>
+            </Link>
+            <Link href={'/auth'}>
+            <button className="mr-2 p-2 pr-4 pl-4 hover:bg-zinc-800 rounded-lg">
               Datasource
-            </p>
+            </button>
+            </Link>
             <Link href={"/auth"}>
               <motion.button
                 initial={{ opacity: 0, scale: 0.5 }}

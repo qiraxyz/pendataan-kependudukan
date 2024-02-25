@@ -1,5 +1,5 @@
 import Image from "next/image";
-import OfficeImg from "../../../public/office-workplace.svg";
+import OfficeImg from "@/../public/kepala_kel.svg";
 
 export default function ContentMain() {
   return (

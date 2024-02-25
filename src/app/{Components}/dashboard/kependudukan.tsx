@@ -3,9 +3,10 @@ import KependudukanList from "@/{model}/kependudukan.response";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { dummyData } from "@/[dummy-data]/kependudukan";
+import Link from "next/link";
 
 export default function DashboardContent() {
-  const Card = ({ ImageFrame, title, description }: KependudukanList) => {
+  const Card = ({ ImageFrame, title, description, detailURI }: KependudukanList) => {
     return (
       <div className="bg-white rounded-lg shadow-lg p-8 m-8 flex flex-col items-center">
         <Image src={ImageFrame} alt={""} width={200} height={200} className=""/>
@@ -15,6 +16,7 @@ export default function DashboardContent() {
         <p className="text-gray-600 mt-2 text-center overflow-hidden overflow-ellipsis">
           {description}
         </p>
+        <Link href={detailURI}>
         <motion.button
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -25,6 +27,7 @@ export default function DashboardContent() {
         >
           Details
         </motion.button>
+        </Link>
       </div>
     );
   };
@@ -37,6 +40,7 @@ export default function DashboardContent() {
           ImageFrame={data.ImageFrame}
           title={data.title}
           description={data.description}
+          detailURI={data.detailURI}
           id={0}
         />
       ))}
